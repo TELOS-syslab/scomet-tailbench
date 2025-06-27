@@ -30,14 +30,18 @@ class ExpDist : public Dist {
     private:
         std::default_random_engine g;
         std::exponential_distribution<double> d;
+        double lambda_;
         uint64_t curNs;
 
     public:
         ExpDist(double lambda, uint64_t seed, uint64_t startNs) 
-            : g(seed), d(lambda), curNs(startNs) {}
+            : g(seed), d(lambda), lambda_(lambda), curNs(startNs) {}
 
         uint64_t nextArrivalNs() {
-            curNs += d(g);
+            uint64_t interval = d(g);
+            // uint64_t interval = uint64_t(1.0 / lambda_);
+            printf("interval: %lu\n", interval);
+            curNs += interval;
             return curNs;
         }
 };

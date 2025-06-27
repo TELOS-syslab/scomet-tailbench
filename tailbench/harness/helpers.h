@@ -56,7 +56,7 @@ static void sleepUntil(uint64_t targetNs) {
         uint64_t diffNs = targetNs - curNs;
         struct timespec ts = {(time_t)(diffNs/(1000*1000*1000)), 
             (time_t)(diffNs % (1000*1000*1000))};
-        nanosleep(&ts, NULL); //not guaranteed, hence the loop
+        // nanosleep(&ts, NULL); //not guaranteed, hence the loop
         curNs = getCurNs();
     }
 }

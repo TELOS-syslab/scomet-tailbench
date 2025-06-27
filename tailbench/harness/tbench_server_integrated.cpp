@@ -38,6 +38,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "m5ops.h"
 
 /*******************************************************************************
  * IntegratedServer
@@ -81,6 +82,7 @@ void IntegratedServer::sendResp(int id, const void* data, size_t len) {
     } else if (finishedReqs == warmupReqs + maxReqs) {
         Client::dumpStats();
         syscall(SYS_exit_group, 0);
+        m5_exit();
     }
 
     pthread_mutex_unlock(&lock);

@@ -85,6 +85,7 @@ struct allocator {
         void *x;
         int r = posix_memalign(&x, HugePageSize, HugePageSize);
         assert(!r);
+        printf("superpage madvise %p\n", x);
         r = madvise(x, HugePageSize, MADV_HUGEPAGE);
         if (r) {
             perror("madvise");

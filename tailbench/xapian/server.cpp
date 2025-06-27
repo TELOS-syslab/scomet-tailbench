@@ -14,18 +14,22 @@ unsigned long Server::numReqsToProcess = 0;
 volatile atomic_ulong Server::numReqsProcessed(0);
 pthread_barrier_t Server::barrier;
 
+const char* stopWords[] = { "a", "about", "an", "and", "are", "as", "at", "be",
+    "by", "en", "for", "from", "how", "i", "in", "is", "it", "of", "on",
+    "or", "that", "the", "this", "to", "was", "what", "when", "where",
+    "which", "who", "why", "will", "with" };
+
 Server::Server(int id, string dbPath) 
     : db(dbPath)
     , enquire(db)
     , stemmer("english")
     , id(id)
+    , stopper(stopWords, \
+        stopWords + sizeof(stopWords) / sizeof(stopWords[0]))
 {
-    const char* stopWords[] = { "a", "about", "an", "and", "are", "as", "at", "be",
-        "by", "en", "for", "from", "how", "i", "in", "is", "it", "of", "on",
-        "or", "that", "the", "this", "to", "was", "what", "when", "where",
-        "which", "who", "why", "will", "with" };
 
-    stopper = Xapian::SimpleStopper(stopWords, \
+
+    //stopper = Xapian::SimpleStopper(stopWords, \
             stopWords + sizeof(stopWords) / sizeof(stopWords[0]));
 
     parser.set_database(db);

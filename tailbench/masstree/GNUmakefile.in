@@ -26,9 +26,11 @@ TBENCH_NETWORK_CLIENT_OBJS = $(TBENCHDIR)/client.o \
 							 $(TBENCHDIR)/tbench_client_networked.o
 TBENCH_INTEGRATED_OBJS = $(TBENCHDIR)/client.o \
 						 $(TBENCHDIR)/tbench_server_integrated.o
+TBENCH_GEM5SE_OBJS = $(TBENCHDIR)/client.o \
+						 $(TBENCHDIR)/tbench_server_gem5se.o
 
 all: test_atomics mtd mtclient mttest_integrated mttest_server_networked \
-	mttest_client_networked
+	mttest_client_networked mttest_gem5se
 
 %.o: %.c config.h $(DEPSDIR)/stamp $(INCDEPS)
 	$(CXX) $(CFLAGS) $(DEPCFLAGS) -include config.h -c -o $@ $<
@@ -55,6 +57,10 @@ mtclient: mtclient.o misc.o kvio.o libjson.a
 	$(CXX) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 mttest_integrated: $(TBENCH_INTEGRATED_OBJS) mttest.o kvclient.o misc.o \
+	checkpoint.o $(KVTREES) kvio.o libjson.a
+	$(CXX) $(CFLAGS) -o $@ $^ $(MEMMGR) $(LDFLAGS) $(LIBS)
+
+mttest_gem5se: $(TBENCH_GEM5SE_OBJS) mttest.o kvclient.o misc.o \
 	checkpoint.o $(KVTREES) kvio.o libjson.a
 	$(CXX) $(CFLAGS) -o $@ $^ $(MEMMGR) $(LDFLAGS) $(LIBS)
 

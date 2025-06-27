@@ -1,0 +1,4 @@
+g++ -o xapian_integrated main.o server.o client.o ../harness/client.o ../harness/tbench_server_integrated.o `pkg-config --libs xapian-core` -lpthread -lrt
+g++ -Wall -W -O3 -g -std=c++0x -I../harness -o genTerms genTerms.cpp `pkg-config --libs xapian-core` -lpthread -lrt
+g++ -o xapian_networked_server main.o server.o ../harness/tbench_server_networked.o `pkg-config --libs xapian-core` -lpthread -lrt
+g++ -o xapian_networked_client client.o ../harness/client.o ../harness/tbench_client_networked.o `pkg-config --libs xapian-core` -lpthread -lrt

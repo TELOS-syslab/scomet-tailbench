@@ -5,7 +5,7 @@
 /* #undef FTIME_RETURNS_VOID */
 
 /* Define to 1 if you have the `closefrom' function. */
-/* #undef HAVE_CLOSEFROM */
+#define HAVE_CLOSEFROM 1
 
 /* Define to 1 if you have the `dirfd' function. */
 #define HAVE_DIRFD 1

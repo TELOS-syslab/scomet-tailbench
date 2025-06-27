@@ -67,14 +67,15 @@ int main(int argc, char* argv[]) {
 
     Xapian::Enquire enquire(db);
     Xapian::Stem stemmer("english");
-    Xapian::SimpleStopper stopper;
+    //Xapian::SimpleStopper stopper;
     const char* stopWords[] = { "a", "about", "an", "and", "are", "as", "at", "be",
         "by", "en", "for", "from", "how", "i", "in", "is", "it", "of", "on",
         "or", "that", "the", "this", "to", "was", "what", "when", "where",
         "which", "who", "why", "will", "with" };
 
-    stopper = Xapian::SimpleStopper(stopWords, \
+    //stopper = Xapian::SimpleStopper(stopWords, \
             stopWords + sizeof(stopWords) / sizeof(stopWords[0]));
+    Xapian::SimpleStopper stopper(stopWords, stopWords + sizeof(stopWords) / sizeof(stopWords[0]));
 
     Xapian::QueryParser parser;
     parser.set_database(db);

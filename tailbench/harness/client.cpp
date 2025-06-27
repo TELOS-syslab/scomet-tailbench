@@ -96,6 +96,7 @@ Request* Client::startReq() {
 
     if (curNs < req->genNs) {
         sleepUntil(std::max(req->genNs, curNs + minSleepNs));
+        // don't change this, gem5 is not here!!!
     }
 
     return req;
@@ -116,7 +117,9 @@ void Client::finiReq(Response* resp) {
         uint64_t sjrn = curNs - req->genNs;
         assert(sjrn >= resp->svcNs);
         uint64_t qtime = sjrn - resp->svcNs;
-
+//llj todo printf qtime resp->svcNs and sjrn
+        printf("%lu %lu %lu\n", qtime, resp->svcNs, sjrn);
+        //todo integrated with gem5 api
         queueTimes.push_back(qtime);
         svcTimes.push_back(resp->svcNs);
         sjrnTimes.push_back(sjrn);
@@ -159,6 +162,87 @@ void Client::dumpStats() {
                     sizeof(sjrnTimes[r]));
     }
     out.close();
+}
+
+/*******************************************************************************
+ * Gem5SEClient
+ *******************************************************************************/
+
+ Gem5SEClient::Gem5SEClient(int _nthreads) {
+    status = INIT;
+
+    nthreads = _nthreads;
+    assert(nthreads == 1);
+    
+    minSleepNs = getOpt("TBENCH_MINSLEEPNS", 0);
+    seed = getOpt("TBENCH_RANDSEED", 0);
+    lambda = getOpt<double>("TBENCH_QPS", 1000.0) * 1e-9;
+
+    dist = nullptr; // Will get initialized in startReq()
+
+    startedReqs = 0;
+
+    tBenchClientInit();
+}
+
+Request* Gem5SEClient::startReq() {
+    if (status == INIT) {
+
+        if (!dist) {
+            uint64_t curNs = getCurNs();
+            dist = new ExpDist(lambda, seed, curNs);
+
+            status = WARMUP;
+
+        }
+
+    }
+
+    Request* req = new Request();
+    size_t len = tBenchClientGenReq(&req->data);
+    req->len = len;
+
+    req->id = startedReqs++;
+    req->genNs = dist->nextArrivalNs();
+    inFlightReqs[req->id] = req;
+
+    uint64_t curNs = getCurNs();
+    printf("start req: %lu gen: %lu\n", curNs, req->genNs);
+
+    if (curNs < req->genNs) {
+        sleepUntil(std::max(req->genNs, curNs + minSleepNs));
+    }
+    
+
+    return req;
+}
+
+void Gem5SEClient::finiReq(Response* resp) {
+
+    auto it = inFlightReqs.find(resp->id);
+    assert(it != inFlightReqs.end());
+    Request* req = it->second;
+
+    if (status == ROI || 1) {
+        uint64_t curNs = getCurNs();
+        uint64_t sjrn = curNs - req->genNs;
+        uint64_t qtime = sjrn - resp->svcNs;
+        assert(sjrn >= resp->svcNs);
+        assert(curNs > req->genNs);
+
+        printf("ID:%lu curr: %lu queue:%lu service:%lu sjr:%lu\n",resp->id, curNs, qtime, resp->svcNs, sjrn);
+        //todo integrated with gem5 api
+        queueTimes.push_back(qtime);
+        svcTimes.push_back(resp->svcNs);
+        sjrnTimes.push_back(sjrn);
+    }
+
+    delete req;
+    inFlightReqs.erase(it);
+}
+
+void Gem5SEClient::startRoi() {
+    _startRoi();
 }
 
 /*******************************************************************************

@@ -7,7 +7,7 @@
 const int mycsbaAggrFactor = 256;
 const uint32_t mycsbaAggrMask = mycsbaAggrFactor - 1;
 const long mycsbaSeed = 3242323423L;
-const int mycsbaDbSize = 1000000;
+const int mycsbaDbSize = 10000;//1000000;
 const int mycsbaKeySize = 4 + 18 + 1;
 const int mycsbaValSize = 12; // int32_t can be up to 2B => 10 digits + minus sign
 

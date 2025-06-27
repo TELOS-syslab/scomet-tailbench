@@ -1,0 +1,20 @@
+Buildfile: /home/llj/Tailbench/tailbench/specjbb/build.xml
+
+init:
+    [mkdir] Created dir: /home/llj/Tailbench/tailbench/specjbb/build
+    [mkdir] Created dir: /home/llj/Tailbench/tailbench/specjbb/build/dist
+    [mkdir] Created dir: /home/llj/Tailbench/tailbench/specjbb/build/tmp
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist/xml
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist/xml
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+     [copy] Copying 1 file to /home/llj/Tailbench/tailbench/specjbb/build/dist
+
+compile:
+    [javac] /home/llj/Tailbench/tailbench/specjbb/build.xml:37: warning: 'includeantruntime' was not set, defaulting to build.sysclasspath=last; set to false for repeatable builds
+    [javac] Compiling 63 source files to /home/llj/Tailbench/tailbench/specjbb/build/tmp
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 8

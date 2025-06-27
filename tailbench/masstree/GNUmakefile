@@ -26,9 +26,11 @@ TBENCH_NETWORK_CLIENT_OBJS = $(TBENCHDIR)/client.o \
 							 $(TBENCHDIR)/tbench_client_networked.o
 TBENCH_INTEGRATED_OBJS = $(TBENCHDIR)/client.o \
 						 $(TBENCHDIR)/tbench_server_integrated.o
+TBENCH_GEM5SE_OBJS = $(TBENCHDIR)/client.o \
+						 $(TBENCHDIR)/tbench_server_gem5se.o
 
 all: test_atomics mtd mtclient mttest_integrated mttest_server_networked \
-	mttest_client_networked
+	mttest_client_networked mttest_gem5se
 
 %.o: %.c config.h $(DEPSDIR)/stamp $(INCDEPS)
 	$(CXX) $(CFLAGS) $(DEPCFLAGS) -include config.h -c -o $@ $<
@@ -58,6 +60,10 @@ mttest_integrated: $(TBENCH_INTEGRATED_OBJS) mttest.o kvclient.o misc.o \
 	checkpoint.o $(KVTREES) kvio.o libjson.a
 	$(CXX) $(CFLAGS) -o $@ $^ $(MEMMGR) $(LDFLAGS) $(LIBS)
 
+mttest_gem5se: $(TBENCH_GEM5SE_OBJS) mttest.o kvclient.o misc.o \
+	checkpoint.o $(KVTREES) kvio.o libjson.a
+	$(CXX) $(CFLAGS) -o $@ $^ $(MEMMGR) $(LDFLAGS) $(LIBS)
+
 mttest_server_networked: $(TBENCH_NETWORK_SERVER_OBJS) mttest.o \
 	misc.o checkpoint.o $(KVTREES) kvio.o libjson.a
 	$(CXX) $(CFLAGS) -o $@ $^ $(MEMMGR) $(LDFLAGS) $(LIBS)
@@ -82,7 +88,7 @@ configure config.h.in: configure.ac
 	touch config.h.in
 
 config.status: configure
-	./configure  '--disable-assertions' '--with-malloc=tcmalloc'
+	./configure  '--disable-assertions' '--with-malloc=tcmalloc' '--disable-superpage'
 
 $(DEPSDIR)/stamp:
 	mkdir -p $(DEPSDIR)

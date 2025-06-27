@@ -16,8 +16,8 @@ LDFLAGS = -pthread -lrt
 
 BINS = decoder_integrated decoder_server_networked decoder_client_networked
 ROOTDIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PKG_CONFIG_PATH = $(ROOTDIR)/sphinx-install/lib/pkgconfig
-LD_LIBRARY_PATH = $(ROOTDIR)/sphinx-install/lib
+#PKG_CONFIG_PATH = $(ROOTDIR)/sphinx-install/lib/pkgconfig
+#LD_LIBRARY_PATH = $(ROOTDIR)/sphinx-install/lib
 
 all : $(BINS)
 

@@ -1,1 +1,1 @@
-configure args: --enable-dora --enable-dbgsymbols
+configure args: --enable-dora --enable-dbgsymbols CXXFLAGS=-std=c++98 -g --no-create --no-recursion

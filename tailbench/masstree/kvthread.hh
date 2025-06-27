@@ -399,6 +399,7 @@ class threadinfo {
                        MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
         assert(x != MAP_FAILED);
         x = (void *)iceil(uintptr_t(x), uintptr_t(HugePageSize));
+        printf("superpage mmap madvise %p\n", x);
         if (madvise(x, algsz - HugePageSize, MADV_HUGEPAGE)) {
             perror("madvise");
             exit(EXIT_FAILURE);
@@ -442,14 +443,19 @@ class threadinfo {
 			   allocationtag ta = ta_data, int line = 0) {
 	int nl = (sz + memdebug_size + CacheLineSize - 1) / CacheLineSize;
 	assert(nl < NMaxLines);
-	if (unlikely(!arena[nl - 1]))
-	    refill_aligned_arena(nl);
+	if (unlikely(!arena[nl - 1])){
+        refill_aligned_arena(nl);
+    }
+	    
 	void *p = arena[nl - 1];
-	if (p)
-	    arena[nl - 1] = *reinterpret_cast<void **>(p);
+	if (p){
+        arena[nl - 1] = *reinterpret_cast<void **>(p);
+    }
 	p = memdebug::make(p, sz, (tag << 8) + nl, line);
-	if (p)
-	    pstat.mark_alloc(nl * CacheLineSize, ta);
+	if (p){
+        pstat.mark_alloc(nl * CacheLineSize, ta);
+    }
+	    
 	return p;
     }
     void deallocate_aligned(void *p, size_t sz, memtag tag = memtag_none,

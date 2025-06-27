@@ -61,6 +61,16 @@ class IntegratedServer : public Server, public Client {
         void sendResp(int id, const void* data, size_t size);
 };
 
+class Gem5SEServer : public Server,public Gem5SEClient {
+    private:
+
+    public:
+        Gem5SEServer(int nthreads);
+
+        size_t recvReq(int id, void** data);
+        void sendResp(int id, const void* data, size_t size);
+};
+
 class NetworkedServer : public Server {
     private:
         pthread_mutex_t sendLock;

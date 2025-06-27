@@ -81,6 +81,7 @@ volatile uint64_t globalepoch = 1;     // global epoch, updated by main thread r
 kvepoch_t global_log_epoch = 0;
 static int port = 2117;
 static int rscale_ncores = 0;
+bool gem5se = false;
 
 #if MEMSTATS && HAVE_NUMA_H && HAVE_LIBNUMA
 static struct {
@@ -755,7 +756,7 @@ enum { opt_pin = 1, opt_port, opt_duration,
        opt_test, opt_test_name, opt_threads, opt_trials, opt_quiet, opt_print,
        opt_normalize, opt_limit, opt_notebook, opt_compare, opt_no_run,
        opt_lazy_timer, opt_gid, opt_tree_stats, opt_rscale_ncores, opt_cores,
-       opt_stats };
+       opt_stats, gem5_test };
 static const Clp_Option options[] = {
     { "pin", 'p', opt_pin, 0, Clp_Negate },
     { "port", 0, opt_port, Clp_ValInt, 0 },
@@ -780,7 +781,8 @@ static const Clp_Option options[] = {
     { "stats", 0, opt_stats, 0, 0 },
     { "compare", 'c', opt_compare, Clp_ValString, 0 },
     { "cores", 0, opt_cores, Clp_ValString, 0 },
-    { "no-run", 0, opt_no_run, 0, 0 }
+    { "no-run", 0, opt_no_run, 0, 0 },
+    { "gem5-test", 's', gem5_test, Clp_ValInt, 0 }
 };
 
 static void run_one_test(int trial, const char *treetype, const char *test,
@@ -915,6 +917,9 @@ main(int argc, char *argv[])
 	    (is_treetype ? treetypes.push_back(clp->vstr) : tests.push_back(clp->vstr));
 	    break;
 	}
+    case gem5_test:
+        gem5se = clp->val.i;
+        break;
 	default:
 	    fprintf(stderr, "Usage: kvtest [-n] [-jN] TREETYPE TESTNAME\n");
 	    exit(EXIT_FAILURE);
@@ -945,6 +950,63 @@ main(int argc, char *argv[])
     if (tests.empty())
 	tests.push_back("rw1");
 
+    if(gem5se){
+        printf("\ngem5 test\n");
+        printf("now %lf\n",::now());
+        tBenchServerThreadStart();
+        Masstree::default_table* table_ = new Masstree::default_table();
+        threadinfo* tinfo = threadinfo::make(threadinfo::TI_PROCESS, 0);
+	    table_->initialize((threadinfo *) tinfo);
+        kvtest_server<Masstree::default_table> server;
+        server.set_table(table_, (threadinfo *) tinfo);
+        server.rand.reset(mycsbaSeed);
+        printf("finish init %lf\n",::now());
+    int n;
+    char key[mycsbaKeySize], val[mycsbaValSize];
+
+    //NOTE: Single-threaded for now (zsim/liblat)
+    //int id = server.id();
+    //int nth = server.nthreads();
+
+    //Populate
+    for (n = 0; n < mycsbaDbSize; n++) {
+        if(n%10000==0){
+            printf("populate %d sz %d\n", n,mycsbaDbSize);
+        }
+        strcpy(key, "user");
+        int p = 4;
+        for (int i = 0; i < 18; i++, p++)
+            key[p] = '0' + (server.rand.next() % 10);
+        key[p] = 0;
+	int32_t v = (int32_t) server.rand.next();
+    sprintf(val, "%d", v);
+	server.put(Str(key, strlen(key)), Str(val, strlen(val)));
+    }
+    
+    server.rand.reset(mycsbaSeed);
+
+    printf("start bench now %lf\n",::now());
+        while(true){
+            Request* req = nullptr;
+        size_t len = tBenchRecvReq(reinterpret_cast<void**>(&req));
+        assert(len == sizeof(Request) * mycsbaAggrFactor);
+        for (int op = 0; op < mycsbaAggrFactor; ++op) {
+            Request* cur = &req[op];
+            if (cur->type == GET) {
+                server.get_sync(Str(cur->key, strlen(cur->key)));
+            } else if (cur->type == PUT) {
+                server.put(Str(cur->key, strlen(cur->key)), 
+                        Str(cur->val, strlen(cur->val)));
+            } else {
+                std::cerr << "Unknown Request type" << std::endl;
+                exit(-1);
+            }
+        }
+        Response resp = { SUCCESS };
+        tBenchSendResp(reinterpret_cast<void*>(&resp), sizeof(resp));
+        //exit(0);
+        }
+    }
     // arrange for a per-thread threadinfo pointer
     ret = pthread_key_create(&threadinfo::key, 0);
     mandatory_assert(ret == 0);

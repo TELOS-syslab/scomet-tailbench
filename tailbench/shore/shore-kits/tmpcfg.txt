@@ -1,8 +1,8 @@
-configure args: --enable-shore6 --enable-dbgsymbols SHORE_HOME=../shore-mt/
+configure args: --enable-shore6 --enable-dbgsymbols SHORE_HOME=../shore-mt/ CXXFLAGS=-std=c++98 -g --no-create --no-recursion
 
 Shore Kits configuration:
   Version:         KITS_VERSION   shore-kits.2.1
-  Home:            KITS_HOME      /home/tailbench/Tailbench/tailbench/shore/shore-kits
+  Home:            KITS_HOME      /home/wjy/Tailbench/tailbench/shore/shore-kits
   Features:        KITS_FEATURES   caches
   Shore SM home:   SHORE_HOME     ../shore-mt/
   Shore SM type:   SHORE_TYPE     Shore-SM-6.X.X

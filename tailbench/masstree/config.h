@@ -63,9 +63,6 @@
 /* Define if memory debugging support is enabled. */
 /* #undef HAVE_MEMDEBUG */
 
-/* Define to 1 if you have the <memory.h> header file. */
-#define HAVE_MEMORY_H 1
-
 /* Define to 1 if you have the <numa.h> header file. */
 #define HAVE_NUMA_H 1
 
@@ -90,6 +87,9 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
 
+/* Define to 1 if you have the <stdio.h> header file. */
+/* #undef HAVE_STDIO_H */
+
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
 
@@ -106,7 +106,7 @@
 #define HAVE_STRING_H 1
 
 /* Define if superpage support is enabled. */
-#define HAVE_SUPERPAGE_ENABLED 1
+/* #undef HAVE_SUPERPAGE_ENABLED */
 
 /* Define to 1 if you have the <sys/epoll.h> header file. */
 #define HAVE_SYS_EPOLL_H 1
@@ -252,7 +252,9 @@
 /* The size of `void *', as computed by sizeof. */
 #define SIZEOF_VOID_P 8
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most

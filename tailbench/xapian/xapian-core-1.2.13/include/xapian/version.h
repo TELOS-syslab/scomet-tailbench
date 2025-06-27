@@ -24,11 +24,11 @@
 #if __GNUC__ < 3 || (__GNUC__ == 3 && __GNUC_MINOR__ == 0)
 #error Xapian no longer supports GCC < 3.1
 #else
-#if !defined(__GXX_ABI_VERSION) || __GXX_ABI_VERSION != 1011
+#if !defined(__GXX_ABI_VERSION) || __GXX_ABI_VERSION != 1017
 #error The C++ ABI version of compiler you are using does not match
 #error that of the compiler used to build the library. The versions
 #error must match or your program will not work correctly.
-#error The Xapian library was built with g++ 7.5.0
+#error The Xapian library was built with g++ 12.2.0
 #endif
 
 #ifdef _GLIBCXX_DEBUG

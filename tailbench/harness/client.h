@@ -53,13 +53,14 @@ class Client {
         void _startRoi();
 
     public:
+        Client(){};
         Client(int nthreads);
 
-        Request* startReq();
-        void finiReq(Response* resp);
+        virtual Request* startReq();
+        virtual void finiReq(Response* resp);
 
-        void startRoi();
-        void dumpStats();
+        virtual void startRoi();
+        virtual void dumpStats();
 
 };
 
@@ -76,6 +77,17 @@ class NetworkedClient : public Client {
         bool send(Request* req);
         bool recv(Response* resp);
         const std::string& errmsg() const { return error; }
+};
+
+class Gem5SEClient : public Client {
+    private:
+
+    public:
+        Gem5SEClient(int nthreads);
+        virtual Request* startReq() override;
+        virtual void finiReq(Response* resp) override;
+
+        virtual void startRoi() override;        
 };
 
 #endif

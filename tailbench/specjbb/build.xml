@@ -32,8 +32,8 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
     <javac 
-    source="1.5"
-    target="1.5"
+    source="1.8"
+    target="1.8"
     srcdir="${src}" destdir="${tmp}"/>
   </target>
 

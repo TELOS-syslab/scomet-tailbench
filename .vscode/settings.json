@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "functional": "cpp",
+        "memory": "cpp",
+        "optional": "cpp",
+        "sstream": "cpp",
+        "complex": "cpp",
+        "bit": "cpp",
+        "bitset": "cpp",
+        "future": "cpp",
+        "istream": "cpp",
+        "stop_token": "cpp",
+        "valarray": "cpp",
+        "string": "cpp",
+        "*.inc": "cpp"
+    }
+}

@@ -431,7 +431,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/tailbench/Tailbench/tailbench/shore/shore-kits'
+ac_pwd='/home/wjy/Tailbench/tailbench/shore/shore-kits'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -603,7 +603,7 @@ S["KITS_VERSION"]="shore-kits.2.1"
 S["KITS_VERSION_REV"]="1"
 S["KITS_VERSION_MINOR"]="2"
 S["KITS_VERSION_MAJOR"]="shore-kits"
-S["KITS_HOME"]="/home/tailbench/Tailbench/tailbench/shore/shore-kits"
+S["KITS_HOME"]="/home/wjy/Tailbench/tailbench/shore/shore-kits"
 S["GCC_COMPILER"]="g++"
 S["ARCHOS"]="x86_64_LINUX"
 S["USE_VTUNE_FALSE"]=""
@@ -665,12 +665,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]=""
-S["install_sh"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/install-sh"
-S["MAKEINFO"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/missing automake-1.15"
-S["AUTOCONF"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/tailbench/Tailbench/tailbench/shore/shore-kits/missing aclocal-1.15"
+S["install_sh"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/install-sh"
+S["MAKEINFO"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/missing automake-1.15"
+S["AUTOCONF"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/wjy/Tailbench/tailbench/shore/shore-kits/missing aclocal-1.15"
 S["VERSION"]="2.1"
 S["PACKAGE"]="this_is_shore_kits"
 S["CYGPATH_W"]="echo"
